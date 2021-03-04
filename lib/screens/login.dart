@@ -51,6 +51,18 @@ class _LoginState extends State<Login> {
     }
   }
 
+  void register() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,15 +120,33 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Text(_errorMessage),
-                ElevatedButton(
-                  child: Text('Login'),
-                  onPressed: () {
-                    print(_emailController.text);
-                    print(_passwordController.text);
-                    if (_formKey.currentState.validate()) {
-                      login();
-                    }
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: Text('Login'),
+                      onPressed: () {
+                        print(_emailController.text);
+                        print(_passwordController.text);
+                        if (_formKey.currentState.validate()) {
+                          login();
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      child: Text('Register'),
+                      onPressed: () {
+                        print(_emailController.text);
+                        print(_passwordController.text);
+                        if (_formKey.currentState.validate()) {
+                          register();
+                        }
+                      },
+                    ),
+                  ],
                 ),
                 ElevatedButton(
                   child: Text('Login with Facebook'),
